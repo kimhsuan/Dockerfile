@@ -1,0 +1,13 @@
+version: '3.9'
+
+services:
+  sentinel:
+    image: hsuan.cloud/softwaresc/sentinel:1.7.2
+    hostname: sentinel
+    container_name: sentinel
+    ports:
+      - 8719:8719
+      - 9019:9019
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+    restart: unless-stopped

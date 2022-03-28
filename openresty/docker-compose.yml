@@ -1,0 +1,24 @@
+version: '3.8'
+services:
+  geoipupdate:
+    image: maxmindinc/geoipupdate:v4.8
+    container_name: geoipupdate
+    restart: unless-stopped
+    environment:
+      - GEOIPUPDATE_ACCOUNT_ID=Your MaxMind account ID
+      - GEOIPUPDATE_LICENSE_KEY=Your case-sensitive MaxMind license key
+      - GEOIPUPDATE_EDITION_IDS=GeoLite2-City
+      - GEOIPUPDATE_FREQUENCY=168
+    volumes:
+      - ./geoip:/usr/share/GeoIP
+  openresty:
+    image: hsuan.cloud/hsuan/openresty:1.19.9.1
+    container_name: openresty
+    ports:
+      - 80:80
+      - 443:443
+    restart: unless-stopped
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ./conf.d:/etc/nginx/conf.d
+      - ./geoip:/usr/local/openresty/nginx/geoip
